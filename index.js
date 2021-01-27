@@ -7,10 +7,8 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(
-    () => console.log('Connected to MongoDB...'),
-    (err) => console.log(err)
-  );
+  .then(() => console.log('Connected to MongoDB...'))
+  .catch((err) => console.log(err));
 
 const app = express();
 
