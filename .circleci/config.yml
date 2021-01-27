@@ -18,6 +18,9 @@ jobs:
   build:
     docker:
       - image: 'cimg/node:14.15.1'
+        environment:
+          NODE_ENV: ci
+          MONGO_URI: $MONGO_URI
     steps:
       - checkout
       - restore_cache:
@@ -29,4 +32,5 @@ jobs:
             - node_modules
       - run: nohup npm start &
       - run: sleep 3
+      - run: npm run server
       - run: npm run test
