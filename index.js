@@ -1,6 +1,11 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const keys = require('./config/keys');
+
+const mongoose = require('mongoose');
+require('./models');
+
+const { graphqlHTTP } = require('express-graphql');
+const schema = require('./schema');
 
 mongoose
   .connect(keys.mongoURI, {
@@ -12,7 +17,13 @@ mongoose
 
 const app = express();
 
-app.use(express.json());
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+);
 
 const PORT = process.env.PORT || 5000;
 
