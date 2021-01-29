@@ -1,7 +1,6 @@
 const { GraphQLObjectType, GraphQLString } = require('graphql');
 const UserType = require('./user_type');
-const mongoose = require('mongoose');
-const User = mongoose.model('user');
+const UserController = require('../controllers/UserController');
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -13,8 +12,8 @@ const Mutation = new GraphQLObjectType({
         password: { type: GraphQLString },
       },
       resolve(parentValue, { email, password }) {
-        const user = new User({ email, password });
-        return user.save();
+        const user = new UserController();
+        return user.create({ email, password });
       },
     },
   },

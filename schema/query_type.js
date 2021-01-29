@@ -1,7 +1,6 @@
 const { GraphQLObjectType, GraphQLList } = require('graphql');
 const UserType = require('./user_type');
-const mongoose = require('mongoose');
-const User = mongoose.model('user');
+const UserController = require('../controllers/UserController');
 
 const Query = new GraphQLObjectType({
   name: 'Query',
@@ -9,7 +8,7 @@ const Query = new GraphQLObjectType({
     users: {
       type: new GraphQLList(UserType),
       resolve() {
-        return User.find({});
+        return UserController.readAll();
       },
     },
   },
