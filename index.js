@@ -2,6 +2,7 @@ const express = require('express');
 const keys = require('./config/keys');
 
 const mongoose = require('mongoose');
+mongoose.set('returnOriginal', false);
 require('./models');
 
 const { graphqlHTTP } = require('express-graphql');
@@ -11,6 +12,7 @@ mongoose
   .connect(keys.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then(() => console.log('Connected to MongoDB...'))
   .catch((err) => console.log(err));
@@ -21,7 +23,7 @@ app.use(
   '/graphql',
   graphqlHTTP({
     schema,
-    graphiql: true,
+    graphiql: !process.env.NODE_ENV ? true : false,
   })
 );
 
