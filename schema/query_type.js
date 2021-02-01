@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLList } = require('graphql');
+const { GraphQLObjectType, GraphQLID, GraphQLList } = require('graphql');
 const UserType = require('./user_type');
 const CompanyType = require('./company_type');
 const UserController = require('../controllers/UserController');
@@ -17,6 +17,15 @@ const Query = new GraphQLObjectType({
       type: new GraphQLList(CompanyType),
       resolve() {
         return CompanyController.readAll();
+      },
+    },
+    company: {
+      type: CompanyType,
+      args: {
+        id: { type: GraphQLID },
+      },
+      resolve(parentValue, { id }) {
+        return CompanyController.read(id);
       },
     },
   },
