@@ -1,21 +1,35 @@
-const { GraphQLObjectType, GraphQLID, GraphQLString } = require('graphql');
-const UserType = require('./user_type');
+const {
+  GraphQLObjectType,
+  GraphQLNonNull,
+  GraphQLID,
+  GraphQLString,
+} = require('graphql');
+const AuthPayloadType = require('./auth_payload_type');
 const CompanyType = require('./company_type');
-const UserController = require('../controllers/UserController');
+const AuthPayloadController = require('../controllers/AuthPayloadController');
 const CompanyController = require('../controllers/CompanyController');
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    addUser: {
-      type: UserType,
+    signup: {
+      type: AuthPayloadType,
       args: {
-        email: { type: GraphQLString },
-        password: { type: GraphQLString },
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve(parentValue, { email, password }) {
-        const user = new UserController();
-        return user.create({ email, password });
+        return AuthPayloadController.signUp({ email, password });
+      },
+    },
+    login: {
+      type: AuthPayloadType,
+      args: {
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parentValue, { email, password }) {
+        return AuthPayloadController.logIn({ email, password });
       },
     },
     addCompany: {

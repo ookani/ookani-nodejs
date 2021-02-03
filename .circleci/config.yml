@@ -21,6 +21,7 @@ jobs:
         environment:
           NODE_ENV: ci
           MONGO_URI: $MONGO_URI
+          SECRET: $SECRET
     steps:
       - checkout
       - restore_cache:
