@@ -8,6 +8,7 @@ const AuthPayloadType = require('./auth_payload_type');
 const CompanyType = require('./company_type');
 const AuthPayloadController = require('../controllers/AuthPayloadController');
 const CompanyController = require('../controllers/CompanyController');
+const { requireAuth } = require('../utils');
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -35,9 +36,10 @@ const Mutation = new GraphQLObjectType({
     addCompany: {
       type: CompanyType,
       args: {
-        name: { type: GraphQLString },
+        name: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve(parentValue, { name }) {
+      resolve(parentValue, { name }, context) {
+        requireAuth(context);
         return CompanyController.create({ name });
       },
     },
@@ -47,16 +49,18 @@ const Mutation = new GraphQLObjectType({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
       },
-      resolve(parentValue, { id, name }) {
+      resolve(parentValue, { id, name }, context) {
+        requireAuth(context);
         return CompanyController.update(id, { name });
       },
     },
     eliminateCompany: {
       type: CompanyType,
       args: {
-        id: { type: GraphQLID },
+        id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      resolve(parentValue, { id }) {
+      resolve(parentValue, { id }, context) {
+        requireAuth(context);
         return CompanyController.delete(id);
       },
     },

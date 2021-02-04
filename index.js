@@ -1,5 +1,6 @@
 const express = require('express');
 const keys = require('./config/keys');
+const { getUserId } = require('./utils');
 
 const mongoose = require('mongoose');
 mongoose.set('returnOriginal', false);
@@ -21,10 +22,15 @@ const app = express();
 
 app.use(
   '/graphql',
-  graphqlHTTP({
+  graphqlHTTP((request, response, graphQLParams) => ({
     schema,
     graphiql: !process.env.NODE_ENV ? true : false,
-  })
+    context: {
+      ...request,
+      userId:
+        request && request.headers.authorization ? getUserId(request) : null,
+    },
+  }))
 );
 
 app.get('/', (req, res) => res.send('Testing Node JS API'));
