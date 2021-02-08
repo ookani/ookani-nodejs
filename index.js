@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const keys = require('./config/keys');
 const { getUserId } = require('./utils');
 
@@ -20,6 +21,7 @@ mongoose
 
 const app = express();
 
+app.use(cors);
 app.use(
   '/graphql',
   graphqlHTTP((request, response, graphQLParams) => ({

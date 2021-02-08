@@ -3,6 +3,8 @@ const { GraphQLNonNull, GraphQLID, GraphQLString } = require('graphql');
 const CompanyType = require('../types/company_type');
 const CompanyController = require('../../controllers/CompanyController');
 
+const { requireAuth } = require('../../utils');
+
 module.exports = {
   addCompany: {
     type: CompanyType,
