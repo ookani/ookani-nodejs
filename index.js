@@ -35,7 +35,7 @@ app.use(
   }))
 );
 
-app.get('/', (req, res) => res.send('Testing Node JS API: Branch Develop'));
+app.get('/', (req, res) => res.send('Testing Node JS API'));
 
 const PORT = process.env.PORT || 5000;
 
