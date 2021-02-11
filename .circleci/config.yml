@@ -8,11 +8,12 @@ workflows:
     jobs:
       - build
       - heroku/deploy-via-git:
+          app-name: $HEROKU_APP_NAME_STAGING
           requires:
             - build
           filters:
             branches:
-              only: main
+              only: develop
 
 jobs:
   build:
